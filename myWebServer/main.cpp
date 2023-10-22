@@ -3,8 +3,8 @@
  * @Author: zsq 1363759476@qq.com
  * @Date: 2023-04-06 11:06:48
  * @LastEditors: zsq 1363759476@qq.com
- * @LastEditTime: 2023-06-08 10:55:04
- * @FilePath: /Linux_nc/WebServer_202304/myWebServer/main.cpp
+ * @LastEditTime: 2023-10-22 10:17:33
+ * @FilePath: /Linux_nc/WebServer/myWebServer/main.cpp
  * @Descripttion: 
  */
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {  // 程序模拟的是proacter模式
     // 1.创建一个套接字        错误  SOCK_DGRAM 之前写成了这个，然后就perror("listen")了
     int listenfd = socket(AF_INET, SOCK_STREAM, 0); // listenfd就是监听的文件描述符
     
-    // 2.绑定，将 fd 和本地的IP + 端口进行绑定
+    // 2.绑定，将 fd文件描述符 和本地的IP + 端口进行绑定
     struct sockaddr_in address;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_family = AF_INET;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {  // 程序模拟的是proacter模式
     
     // 将监听的文件描述符相关的检测信息添加到epoll实例中
     int epollfd = epoll_create(5);
-    epoll_event events[MAX_EVENT_NUMBER]; // 可以写成struct epoll_event吗
+    epoll_event events[MAX_EVENT_NUMBER]; // 可以写成struct epoll_event吗，可以，但是别写，在c++中，struct其实和class几乎一样，也是类，那么你见到class创建对象的时候加class了吗
 
     addfd(epollfd, listenfd, false); // 监听的文件描述符不用EPOLLONESHOT，因为本来就只触发一次，接收数据的文件描述符需要EPOLLONESHOT
     // 一般监听文件描述符listenfd不设置为边沿触发EPOLLET
